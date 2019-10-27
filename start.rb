@@ -98,16 +98,16 @@ module Service
       super
       self.class.fire_and_forget(executable,
         "--SocksPort #{port}",
-	"--ControlPort #{control_port}",
-        "--NewCircuitPeriod 15",
-	"--MaxCircuitDirtiness 15",
-	"--UseEntryGuards 0",
-	"--UseEntryGuardsAsDirGuards 0",
-	"--CircuitBuildTimeout 5",
-	"--ExitRelay 0",
-	"--RefuseUnknownExits 0",
-	"--ClientOnly 1",
-	"--AllowSingleHopCircuits 1",
+        "--ControlPort #{control_port}",
+        "--NewCircuitPeriod 10",
+	    "--MaxCircuitDirtiness 120",
+	    "--UseEntryGuards 0",
+	    "--UseEntryGuardsAsDirGuards 0",
+	    "--CircuitBuildTimeout 5",
+	    "--ExitRelay 0",
+	    "--RefuseUnknownExits 0",
+	    "--ClientOnly 1",
+	    "--AllowSingleHopCircuits 1",
         "--DataDirectory #{data_directory}",
         "--PidFile #{pid_file}",
         "--Log \"warn syslog\"",
@@ -213,7 +213,7 @@ module Service
   class Haproxy < Base
     attr_reader :backends
 
-    def initialize(port = 5566)
+    def initialize(port = 5555)
       @config_erb_path = "/usr/local/etc/haproxy.cfg.erb"
       @config_path = "/usr/local/etc/haproxy.cfg"
       @backends = []
@@ -250,7 +250,7 @@ end
 haproxy = Service::Haproxy.new
 proxies = []
 
-tor_instances = ENV['tors'] || 10
+tor_instances = ENV['tors'] || 25
 tor_instances.to_i.times.each do |id|
   proxy = Service::Proxy.new(id)
   haproxy.add_backend(proxy)
