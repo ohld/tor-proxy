@@ -11,7 +11,7 @@ RUN apk --no-cache --no-progress upgrade && \
     sed -i 's|^\(logfile\)|#\1|' $file && \
     sed -i 's|^#\(log-messages\)|\1|' $file && \
     sed -i 's|^#\(log-highlight-messages\)|\1|' $file && \
-    sed -i '/forward *localhost\//a forward-socks5t / 127.0.0.1:5555 .' $file&&\
+    sed -i '/forward *localhost\//a forward-socks5t / 127.0.0.1:9050 .' $file&&\
     sed -i '/^forward-socks5t \//a forward 172.16.*.*/ .' $file && \
     sed -i '/^forward 172\.16\.\*\.\*\//a forward 172.17.*.*/ .' $file && \
     sed -i '/^forward 172\.17\.\*\.\*\//a forward 172.18.*.*/ .' $file && \
@@ -45,7 +45,7 @@ RUN apk --no-cache --no-progress upgrade && \
     echo 'ExitPolicy reject *:*' >>/etc/tor/torrc && \
     echo 'VirtualAddrNetworkIPv4 10.192.0.0/10' >>/etc/tor/torrc && \
     echo 'DNSPort 5353' >>/etc/tor/torrc && \
-    echo 'SocksPort 0.0.0.0:5555 IsolateDestAddr' >>/etc/tor/torrc && \
+    echo 'SocksPort 0.0.0.0:9050 IsolateDestAddr' >>/etc/tor/torrc && \
     echo 'TransPort 0.0.0.0:9040' >>/etc/tor/torrc && \
     mkdir -p /etc/tor/run && \
     chown -Rh tor. /var/lib/tor /etc/tor/run && \
@@ -54,15 +54,16 @@ RUN apk --no-cache --no-progress upgrade && \
 
 COPY torproxy.sh /usr/bin/
 
-EXPOSE 4444 5555 9051
+EXPOSE 8118 9050 9051
 
 HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
-            CMD curl -sx localhost:4444 'https://check.torproject.org/' | \
+            CMD curl -sx localhost:8118 'https://check.torproject.org/' | \
             grep -qm1 Congratulations
 
 VOLUME ["/etc/tor", "/var/lib/tor"]
 
 ENV LOCATION US
 ENV TOR_NewCircuitPeriod 10
+ENV TORUSER root
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/torproxy.sh"]

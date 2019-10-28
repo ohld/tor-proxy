@@ -28,12 +28,12 @@ For it to work, you must set `--net=host` when launching the container.
 
 ## Exposing the port
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -d dperson/torproxy
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -d dperson/torproxy
 
 **NOTE**: it will take a while for tor to bootstrap...
 
-Then you can hit privoxy web proxy at `http://host-ip:4444` with your browser or
-tor via the socks protocol directly at `http://hostname:5555`.
+Then you can hit privoxy web proxy at `http://host-ip:8118` with your browser or
+tor via the socks protocol directly at `http://hostname:9050`.
 
 
 ## Complex configuration
@@ -81,29 +81,29 @@ Any of the commands can be run at creation with `docker run` or later with
 
 ### Setting the Timezone
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -e TZ=EST5EDT \
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -e TZ=EST5EDT \
                 -d dperson/torproxy
 
 ### Start torproxy setting the allowed bandwidth:
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -d dperson/torproxy -b 100
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -d dperson/torproxy -b 100
 
 OR
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -e BW=100 -d dperson/torproxy
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -e BW=100 -d dperson/torproxy
 
 ### Start torproxy configuring it to be an exit node:
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -d dperson/torproxy -e
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -d dperson/torproxy -e
 
 OR
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -e EXITNODE=1 \
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -e EXITNODE=1 \
                 -d dperson/torproxy
 
 ## Test the proxy:
 
-    curl -Lx http://<ipv4_address>:4444 http://jsonip.com/
+    curl -Lx http://<ipv4_address>:8118 http://jsonip.com/
 
 ---
 
@@ -114,7 +114,7 @@ to copy it from a running container:
 
 Then mount it to a new container like:
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 \
+    sudo docker run -it -p 8118:8118 -p 9050:9050 \
                 -v /some/torrc:/etc/tor/torrc:ro -d dperson/torproxy
 
 # User Feedback
@@ -126,7 +126,7 @@ Then mount it to a new container like:
 If you are affected by this issue (a small percentage of users are) please try
 setting the TORUSER environment variable to root, IE:
 
-    sudo docker run -it -p 4444:4444 -p 5555:5555 -e TORUSER=root -d \
+    sudo docker run -it -p 8118:8118 -p 9050:9050 -e TORUSER=root -d \
                 dperson/torproxy
 
 ### Reporting
