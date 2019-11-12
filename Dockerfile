@@ -63,7 +63,8 @@ HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
 VOLUME ["/etc/tor", "/var/lib/tor"]
 
 ENV LOCATION US
-ENV TOR_NewCircuitPeriod 10
+ENV TOR_NewCircuitPeriod 30
+ENV TOR_MaxCircuitDirtiness 30
 ENV TORUSER root
 
 ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/torproxy.sh"]
