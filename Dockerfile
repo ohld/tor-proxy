@@ -62,10 +62,10 @@ HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
 
 VOLUME ["/etc/tor", "/var/lib/tor"]
 
-# Allow creating new circuits after 15 seconds
-ENV TOR_NewCircuitPeriod 15
-# Never reuse a circuit older than 30 seconds
-ENV TOR_MaxCircuitDirtiness 30
+# Allow creating new circuits after 60 seconds
+ENV TOR_NewCircuitPeriod 60
+# Never reuse a circuit older than 10 minutes
+ENV TOR_MaxCircuitDirtiness 600
 ENV TOR_NumEntryGuards 8
 # Allow exit nodes not in the consensus
 ENV TOR_RefuseUnknownExits 0
